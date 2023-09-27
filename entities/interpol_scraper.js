@@ -38,4 +38,4 @@ class InterpolScrap {
     }
 }
 
-export default InterpolScrap
+export default InterpolScrap;

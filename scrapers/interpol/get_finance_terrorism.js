@@ -1,5 +1,5 @@
-import InterpolScrap from './scrapers/interpol/interpol_scraper.js'
-import { _getTerroristDetail } from '../../utils/get_interpol_terrorist_detail.js';
+import InterpolScrap from "../../entities/interpol_scraper.js";
+import { getTerroristDetail } from "../../utils/get_interpol_terrorist_detail.js";
 
 const interpolScrapper = new InterpolScrap();
 
@@ -14,11 +14,10 @@ async function getFinanceTerrorism(){
     console.error('Erro ao buscar terroristas:', error);
   }
 
-  const terrorists = await _getTerroristDetail(financeTerrorism);
+  const terrorists = await getTerroristDetail(financeTerrorism);
 
   return terrorists;
 }
-
 
 async function teste () {
  let financeTerrorism = await getFinanceTerrorism();

@@ -1,6 +1,7 @@
+import FbiScraper from "../../entities/fbi_scraper";
+import Terrorist from "../../entities/terrorist";
 
-import FbiScraper from './entities/fbi_scraper';
-import Terrorist from './entities/terrorist';
+
 
 const fbiScraper = new FbiScraper();
 const terroristModel = new Terrorist();

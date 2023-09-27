@@ -1,10 +1,11 @@
 import InterpolDetailScrap from "../entities/interpol_detail_scrap";
 import Terrorist from "../entities/terrorist";
 
+
 const interpolDetailScrap = new InterpolDetailScrap();
 const terroristModel = new Terrorist();
 
-export async function _getTerroristDetail(financeTerrorism){
+export async function getTerroristDetail(financeTerrorism){
     let terrorists = [];
     
     for (const terrorist of financeTerrorism) {

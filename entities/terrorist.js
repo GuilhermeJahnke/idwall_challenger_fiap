@@ -56,4 +56,4 @@ class Terrorist{
     }
 }
 
-export default Terrorist;
+export default Terrorist();
