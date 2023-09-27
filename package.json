@@ -1,6 +1,16 @@
 {
-  "name": "scripts",
+  "name": "idwall_challenger_fiap",
   "version": "1.0.0",
-  "private": true,
-  "type": "module"
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "example": "examples"
+  },
+  "type": "module",
+  "scripts": {
+    "script:interpol": "node scrapers/interpol/get_money_laundering.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
