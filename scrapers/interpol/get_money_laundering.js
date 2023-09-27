@@ -2,29 +2,30 @@
 import InterpolScrap from "../../entities/interpol_scraper.js";
 import getTerroristDetail from "../../utils/get_interpol_terrorist_detail.js";
 
-const interpolScrapper = new InterpolScrap();
 
 async function getMoneyLaundering(){
-  let moneyLaudering = [];
+  const interpolScrapper = new InterpolScrap();
 
   try {
-    const moneyLauderingList = await interpolScrapper.getMoneyLaundering();
+    const moneyLauderingList = await interpolScrapper.searchTerrorist(
+      "Money Laundering"
+    );
 
-    moneyLaudering = moneyLauderingList;
+    const terroristDetail = await getTerroristDetail(moneyLauderingList);
 
+    return terroristDetail;
   } catch (error) {
     console.error('Erro ao buscar terroristas:', error);
   }
-
-  const terrorists = await getTerroristDetail(moneyLaudering);
-
-  return terrorists;
 }
 
 
 async function teste () {
  let moneyLauderingTerrosim = await getMoneyLaundering();
- console.log("Money Laudering terrorism = " + moneyLauderingTerrosim );
+ 
+ moneyLauderingTerrosim.forEach((item) => {
+  console.log(item);
+});
 } 
 
 teste()

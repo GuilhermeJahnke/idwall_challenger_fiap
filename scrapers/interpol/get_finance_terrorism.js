@@ -8,7 +8,9 @@ async function getFinanceTerrorism() {
     const financeTerroristList = await interpolScrapper.searchTerrorist(
       "financing of terrorism"
     );
+    
     const terroristDetail = await getTerroristDetail(financeTerroristList);
+
     return terroristDetail;
   } catch (error) {
     console.error("Erro ao buscar terroristas:", error);
