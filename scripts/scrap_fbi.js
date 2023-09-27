@@ -58,21 +58,20 @@ class FbiScraper {
     return responseData.items;
   }
 
-  // async getFraudCriminals() {
-  //   const response = await fetch(
-  //     this.baseUrl +
-  //       new URLSearchParams({
-  //         pageSize: 400,
-  //         person_classification: this.person_classification,
-  //         poster_classification: "default",
-  //       }),
-  //   );
-  //   const responseData = await response.json();
-  //   const fraudCriminals = responseData.items.filter((item) =>
-  //     item?.description?.match(/Bank Fraud/gi),
-  //   );
-  //   return fraudCriminals;
-  // }
+
+   async getFraudCriminals() {
+     const response = await fetch(
+       this.baseUrl +
+         new URLSearchParams({
+           pageSize: this.pageSize,
+           person_classification: this.person_classification,
+           poster_classification: "default",
+         }),
+     );
+     const responseData = await response.json();
+     return responseData.items;
+     ;
+  }
 
 }
 
@@ -110,6 +109,8 @@ class TerroristFbi{
   }
 }
 
+
+
 const fbiScraper = new FbiScraper();
 const terroristModel = new TerroristFbi();
 
@@ -142,7 +143,31 @@ async function getFbiTerrorists(){
   return terrorists;
 }
 
-let terroristList = getFbiTerrorists().then((terrorists) => {
+async function getFraudCriminals(){
+  let fbidefault = [];
+  let defaults = [];
+
+  try {
+    const fraudCriminals = await fbiScraper.getFraudCriminals();
+
+    fbidefault = fraudCriminals
+  } catch (error) {
+    console.error('Erro ao buscar Criminosos por fraudes:', error);
+  }
+
+  for (const criminal of fbidefault) {
+    try {
+      const terroristModelImpl = await terroristModel.fromFbiDetailJson(criminal);
+
+      defaults.push(terroristModelImpl)
+    } catch (error) {
+      console.error('Erro ao buscar detalhe do criminoso por fraude:', error);
+    }
+  }
+  return defaults;
+}
+
+getFraudCriminals().then((terrorists) => {
   console.log('Terrorists:', terrorists);
 }).catch((error) => {
   console.error('Erro ao buscar terroristas:', error);
