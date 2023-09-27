@@ -1,5 +1,5 @@
-import FbiScraper from "../../entities/fbi_scraper";
-import Terrorist from "../../entities/terrorist";
+import FbiScraper from "../../entities/fbi_scraper.js";
+import Terrorist from "../../entities/terrorist.js";
 
 
 
