@@ -18,19 +18,37 @@ class InterpolScrap {
     this.resultPerPage = 160;
   }
 
-  async getFinanceTerrorism() {
+  async searchTerrorist(filter){
     const response = await fetch(
       this.baseUrl + new URLSearchParams({
-        freeText: "financing of terrorism",
+        freeText: filter,
         resultPerPage: this.resultPerPage,
       }) 
       );
 
-      const responseData = await response.json();
+    const responseData = await response.json();
       
-      const noticies = responseData._embedded.notices;
+    const noticies = responseData._embedded.notices;
 
-      return noticies;
+    return noticies;
+  }
+
+  async getFinanceTerrorism() {
+    const response = await this.searchTerrorist("financing of terrorism");
+    
+    return response;
+  }
+
+  async getMoneyLaundering() {
+    const reponse = await this.searchTerrorist("Money Laundering");
+
+    return reponse;
+  }
+
+  async getSecuritiesFraud() {
+    const response = await this.searchTerrorist("Securities Fraud");
+
+    return response;
   }
   
 }
@@ -97,23 +115,10 @@ const interpolScrapper = new InterpolScrap();
 const interpolDetailScrap = new InterpolDetailScrap();
 const terroristModel = new Terrorist();
 
-
-
-async function getFinanceTerrorism(){
-  let financeTerrorism = [];
+async function _getTerroristDetail(financeTerrorism){
   let terrorists = [];
   
-  try {
-    const terrorists = await interpolScrapper.getFinanceTerrorism();
-
-    financeTerrorism = terrorists
-
-  } catch (error) {
-    console.error('Erro ao buscar terroristas:', error);
-  }
-
   for (const terrorist of financeTerrorism) {
-
     try {
       let entityIdFormatted = terrorist.entity_id.replace("/", "-");
 
@@ -131,10 +136,64 @@ async function getFinanceTerrorism(){
   return terrorists;
 }
 
+async function getFinanceTerrorism(){
+  let financeTerrorism = [];
 
-let terroristList = getFinanceTerrorism().then((terrorists) => {
-  console.log('Terrorists:', terrorists);
-})
-.catch((error) => {
-  console.error('Erro ao buscar terroristas:', error);
-});
+  try {
+    const financeTerroristList = await interpolScrapper.getFinanceTerrorism();
+
+    financeTerrorism = financeTerroristList
+  } catch (error) {
+    console.error('Erro ao buscar terroristas:', error);
+  }
+
+  const terrorists = await _getTerroristDetail(financeTerrorism);
+
+  return terrorists;
+}
+
+async function getMoneyLaundering(){
+  let moneyLaudering = [];
+
+  try {
+    const moneyLauderingList = await interpolScrapper.getMoneyLaundering();
+
+    moneyLaudering = moneyLauderingList;
+
+  } catch (error) {
+    console.error('Erro ao buscar terroristas:', error);
+  }
+
+  const terrorists = await _getTerroristDetail(moneyLaudering);
+
+  return terrorists;
+}
+
+async function getSecuritiesFraud(){
+  let securitiesFraud = [];
+
+  try {
+    const securitiesFraudList = await interpolScrapper.getSecuritiesFraud();
+
+    securitiesFraud = securitiesFraudList;
+
+  } catch (error) {
+    console.error('Erro ao buscar terroristas:', error);
+  }
+
+  const terrorists = await _getTerroristDetail(securitiesFraud);
+
+  return terrorists;
+}
+
+
+async function teste () {
+ let financeTerrorism = await getFinanceTerrorism();
+ console.log("Finance Terrorism = " + financeTerrorism)
+ let moneyLauderingTerrosim = await getMoneyLaundering();
+ console.log("Money Laudering terrorism = " + moneyLauderingTerrosim );
+ let securitiesFraudTerrorism = await getSecuritiesFraud();
+ console.log("Securities Fraud terrorism = " + securitiesFraudTerrorism);
+} 
+
+teste()
