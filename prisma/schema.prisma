@@ -1,0 +1,42 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Criminal {
+  id            String          @id @default(uuid())
+  name          String
+  forename      String
+  nationality   String
+  dateOfBirth   DateTime
+  photoUrl      String
+  sex           String
+  reward        Int
+  collectedFrom String
+  crimes        CrimeCriminal[]
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+}
+
+model Crime {
+  id          Int             @id @default(autoincrement())
+  name        String
+  description String
+  criminals   CrimeCriminal[]
+}
+
+model CrimeCriminal {
+  id         Int      @id @default(autoincrement())
+  crimeId    Int
+  criminalId String
+  Criminals  Criminal @relation(fields: [criminalId], references: [id])
+  Crimes     Crime    @relation(fields: [crimeId], references: [id])
+}
