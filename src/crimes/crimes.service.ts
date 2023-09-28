@@ -1,53 +1,23 @@
-import { Injectable, Inject } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { Criminal, Prisma } from '@prisma/client';
+import { Injectable } from '@nestjs/common';
 import { CustomError } from 'src/exception/customError.exception';
-import { CrimesService } from 'src/crimes/crimes.service';
+
+import { Crime, Prisma } from '@prisma/client';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
-export class CriminalsService {
-  @Inject(CrimesService)
-  private readonly crimesService: CrimesService;
+export class CrimesService {
   constructor(private readonly prisma: PrismaService) {}
-  async create(
-    input: Prisma.CriminalCreateWithoutCrimesInput,
-    crimesIds?: number[],
-  ): Promise<Criminal> {
-    try {
-      let crimes = [];
-      if (crimesIds.length !== 0) {
-        crimes = await this.crimesService.findAll({
-          where: {
-            id: {
-              in: crimesIds,
-            },
-          },
-        });
-        const crimesNotFound = crimesIds.reduce((acc, id) => {
-          if (!crimes.find((crime) => crime.id === id)) {
-            acc.push(id);
-          }
-          return acc;
-        }, []);
-        if (crimesNotFound.length !== 0) {
-          throw new CustomError({
-            message:
-              'Some of the crimes Id were not found: ' +
-              crimesNotFound.toString(),
-            status: 404,
-          });
-        }
-      }
 
-      const response = await this.prisma.criminal.create({
+  create(
+    createCrimeDto: Prisma.CrimeCreateWithoutCriminalsInput,
+  ): Promise<Crime> {
+    try {
+      return this.prisma.crime.create({
         data: {
-          ...input,
-          crimes: {
-            connect: crimes.map((crime) => ({ id: crime.id })),
-          },
+          description: createCrimeDto.description,
+          name: createCrimeDto.name,
         },
       });
-      return response;
     } catch (error) {
       if (error.code === 'P2002') {
         console.log(error);
@@ -65,6 +35,7 @@ export class CriminalsService {
           status: 404,
         });
       }
+
       throw new CustomError({
         message: 'Something went wrong during the database request',
         status: 500,
@@ -77,13 +48,13 @@ export class CriminalsService {
     params: {
       skip?: number;
       take?: number;
-      cursor?: Prisma.CriminalWhereUniqueInput;
-      where?: Prisma.CriminalWhereInput;
+      cursor?: Prisma.CrimeWhereUniqueInput;
+      where?: Prisma.CrimeWhereInput;
       orderBy?: Prisma.CrimeOrderByWithAggregationInput;
     } = {},
   ) {
     try {
-      return this.prisma.criminal.findMany(params);
+      return this.prisma.crime.findMany(params);
     } catch (error) {
       throw new CustomError({
         message: 'Something went wrong during the database request',
@@ -93,9 +64,9 @@ export class CriminalsService {
     }
   }
 
-  findOne(id: string) {
+  findOne(id: number) {
     try {
-      return this.prisma.criminal.findUnique({
+      return this.prisma.crime.findUnique({
         where: {
           id,
         },
@@ -116,22 +87,13 @@ export class CriminalsService {
     }
   }
 
-  update(
-    id: string,
-    input: Prisma.CriminalUpdateWithoutCrimesInput,
-    crimesIds?: number[],
-  ) {
+  update(id: number, input: Prisma.CrimeUpdateWithoutCriminalsInput) {
     try {
-      return this.prisma.criminal.update({
+      return this.prisma.crime.update({
         where: {
           id,
         },
-        data: {
-          ...input,
-          crimes: {
-            set: crimesIds?.map((id) => ({ id: id })),
-          },
-        },
+        data: input,
       });
     } catch (error) {
       if (error.code === 'P2002') {
@@ -158,9 +120,9 @@ export class CriminalsService {
     }
   }
 
-  remove(id: string) {
+  remove(id: number) {
     try {
-      return this.prisma.criminal.delete({
+      return this.prisma.crime.delete({
         where: {
           id,
         },

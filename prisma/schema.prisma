@@ -21,7 +21,7 @@ model Criminal {
   sex           String
   reward        Int
   collectedFrom String
-  crimes        CrimeCriminal[]
+  crimes        Crime[]
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
 }
@@ -30,13 +30,5 @@ model Crime {
   id          Int             @id @default(autoincrement())
   name        String
   description String
-  criminals   CrimeCriminal[]
-}
-
-model CrimeCriminal {
-  id         Int      @id @default(autoincrement())
-  crimeId    Int
-  criminalId String
-  Criminals  Criminal @relation(fields: [criminalId], references: [id])
-  Crimes     Crime    @relation(fields: [crimeId], references: [id])
+  criminals   Criminal[]
 }

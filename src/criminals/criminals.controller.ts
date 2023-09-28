@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  HttpException,
 } from '@nestjs/common';
 import { CriminalsService } from './criminals.service';
 import { CreateCriminalDto } from './dto/create-criminal.dto';
@@ -16,30 +17,67 @@ export class CriminalsController {
   constructor(private readonly criminalsService: CriminalsService) {}
 
   @Post()
-  create(@Body() createCriminalDto: CreateCriminalDto) {
-    return this.criminalsService.create(createCriminalDto);
+  create(@Body() body: CreateCriminalDto) {
+    try {
+      const { crimes, ...criminalInput } = body;
+      return this.criminalsService.create(criminalInput, crimes);
+    } catch (error) {
+      throw new HttpException(error.message, error.status || 400);
+    }
   }
 
   @Get()
-  findAll() {
-    return this.criminalsService.findAll();
+  findAll(
+    @Param('skip') skip: string,
+    @Param('take') take: string,
+    @Param('name') name: string,
+    @Param('cursor') cursor: string,
+    @Param('orderBy') orderBy: string,
+    @Param('sort') sort: string,
+  ) {
+    try {
+      return this.criminalsService.findAll({
+        where: {
+          name,
+        },
+        skip: skip ? +skip : undefined,
+        take: take ? +take : undefined,
+        cursor: cursor ? { id: cursor } : undefined,
+        orderBy: {
+          [orderBy]: sort,
+        },
+      });
+    } catch (error) {
+      throw new HttpException(error.message, error.status || 400);
+    }
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.criminalsService.findOne(+id);
+    try {
+      return this.criminalsService.findOne(id);
+    } catch (error) {
+      throw new HttpException(error.message, error.status || 400);
+    }
   }
 
   @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateCriminalDto: UpdateCriminalDto,
-  ) {
-    return this.criminalsService.update(+id, updateCriminalDto);
+  update(@Param('id') id: string, @Body() body: UpdateCriminalDto) {
+    try {
+      const { crimes, ...criminalInput } = body;
+
+      return this.criminalsService.update(id, criminalInput, crimes);
+    } catch (error) {
+      throw new HttpException(error.message, error.status || 400);
+    }
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.criminalsService.remove(+id);
+    try {
+      return this.criminalsService.remove(id);
+    } catch (error) {
+      throw new HttpException(error.message, error.status || 400);
+    }
   }
 }

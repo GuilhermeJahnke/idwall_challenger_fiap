@@ -3,18 +3,18 @@ networks:
   id-wall:
 
 services:
-  app:
-    build: .
-    networks:
-      - id-wall
-    hostname: idw.app
-    container_name: idw_app
-    platform: linux
-    ports:
-      - "3000:3000"
-    depends_on:
-      db:
-        condition: service_healthy
+  # app:
+  #   build: .
+  #   networks:
+  #     - id-wall
+  #   hostname: idw.app
+  #   container_name: idw_app
+  #   platform: linux
+  #   ports:
+  #     - "3000:3000"
+  #   depends_on:
+  #     db:
+  #       condition: service_healthy
     
   db:
     image: postgres:10.3

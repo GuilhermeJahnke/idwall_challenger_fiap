@@ -4,7 +4,7 @@ import {
   ArgumentsHost,
   HttpException,
 } from '@nestjs/common';
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import { CustomHTTPException } from './exception/customHTTP.exception';
 
 @Catch(HttpException, CustomHTTPException)
@@ -14,9 +14,22 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const response = ctx.getResponse<Response>();
     // const request = ctx.getRequest<Request>();
     const status = exception.getStatus();
+    console.log(exception);
+    const isCustomException = exception instanceof CustomHTTPException;
+    if (isCustomException) {
+      const customException = exception as CustomHTTPException;
+      response.status(status).json({
+        message: customException.message,
+      });
+      return;
+    }
+    console.log('teste', exception.getResponse()?.['message']);
 
     response.status(status).json({
-      message: exception.message,
+      message:
+        exception.getResponse()?.['message'] ||
+        exception.message ||
+        'Bad Request',
     });
   }
 }
