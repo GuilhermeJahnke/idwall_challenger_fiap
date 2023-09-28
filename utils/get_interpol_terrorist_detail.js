@@ -15,9 +15,7 @@ export default async function getTerroristDetail(financeTerrorism) {
         entityIdFormatted
       );
 
-      const terroristModelImpl = await terroristModel.fromInterpolDetailJson(
-        terroristDetail
-      );
+      const terroristModelImpl = terroristModel.fromInterpolDetailJson(terroristDetail);
 
       terrorists.push(terroristModelImpl);
     } catch (error) {

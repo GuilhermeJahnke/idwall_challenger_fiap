@@ -4,18 +4,18 @@ import Terrorist from "../../entities/terrorist.js";
 const fbiScraper = new FbiScraper();
 const terroristModel = new Terrorist();
 
-async function getFbiTerrorists() {
+async function getFraudCriminals() {
   try {
-    const terrorists = await fbiScraper.getFbiTerrorists();
+    const fraudCriminals = await fbiScraper.getFraudCriminals();
 
-    return terrorists.map((x) => terroristModel.fromFbiDetailJson(x));
+    return fraudCriminals.map((x) => terroristModel.fromFbiDetailJson(x));
   } catch (error) {
-    console.error("Erro ao buscar detalhe do terrorista:", error);
+    console.error("Erro ao buscar Criminosos por fraudes:", error);
   }
 }
 
 async function teste() {
-  let fbiTerrorist = await getFbiTerrorists();
+  let fbiTerrorist = await getFraudCriminals();
 
   fbiTerrorist.forEach((x) => console.log(x));
 }

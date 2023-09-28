@@ -1,13 +1,13 @@
 class Terrorist {
   constructor(
-    name,
+    fullName,
     dateOfBirth,
     nationalities,
     entityId,
     gender,
     arrestWarrants
   ) {
-    this.name = name;
+    this.fullName = fullName;
     this.dateOfBirth = dateOfBirth;
     this.nationalities = nationalities;
     this.entityId = entityId;
@@ -15,8 +15,8 @@ class Terrorist {
     this.arrestWarrants = arrestWarrants;
   }
 
-  async fromFbiDetailJson(terroristDetail) {
-    let name = terroristDetail.title;
+  fromFbiDetailJson(terroristDetail) {
+    let fullName = terroristDetail.title;
     let dateOfBirth = terroristDetail.dates_of_birth_used;
     let nationalities = terroristDetail.nationality;
     let entityId = null;
@@ -24,7 +24,7 @@ class Terrorist {
     let charge = terroristDetail.caution;
 
     let terroristModel = new Terrorist(
-      name,
+      fullName,
       dateOfBirth,
       nationalities,
       entityId,
@@ -35,8 +35,8 @@ class Terrorist {
     return terroristModel;
   }
 
-  async fromInterpolDetailJson(terroristDetail) {
-    let name = terroristDetail.name + " " + terroristDetail.forename;
+  fromInterpolDetailJson(terroristDetail) {
+    let fullName = terroristDetail.name + " " + terroristDetail.forename;
     let dateOfBirth = terroristDetail.date_of_birth;
     let nationalities = terroristDetail.nationalities;
     let entityId = terroristDetail.entity_id;
@@ -44,7 +44,7 @@ class Terrorist {
     let charge = terroristDetail.arrest_warrants[0].charge;
 
     let terroristModel = new Terrorist(
-      name,
+      fullName,
       dateOfBirth,
       nationalities,
       entityId,

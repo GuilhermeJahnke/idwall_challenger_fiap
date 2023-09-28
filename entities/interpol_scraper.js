@@ -18,18 +18,6 @@ class InterpolScrap {
 
     return noticies;
   }
-
-  async getMoneyLaundering() {
-    const reponse = await this.searchTerrorist("Money Laundering");
-
-    return reponse;
-  }
-
-  async getSecuritiesFraud() {
-    const response = await this.searchTerrorist("Securities Fraud");
-
-    return response;
-  }
 }
 
 export default InterpolScrap;
