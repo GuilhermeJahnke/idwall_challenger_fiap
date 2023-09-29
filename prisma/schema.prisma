@@ -22,6 +22,7 @@ model Criminal {
   reward        Int // TODO: remover
   collectedFrom String
   crimes        Crime[]
+  // entityId      String //TODO: Criar
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
 }

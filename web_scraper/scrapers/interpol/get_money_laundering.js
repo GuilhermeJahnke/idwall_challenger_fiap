@@ -2,7 +2,7 @@
 import InterpolScrap from '../../entities/interpol_scraper.js';
 import getTerroristDetail from '../../utils/get_interpol_terrorist_detail.js';
 
-async function getMoneyLaundering() {
+export default async function getMoneyLaundering() {
   const interpolScrapper = new InterpolScrap();
 
   try {
@@ -18,12 +18,3 @@ async function getMoneyLaundering() {
   }
 }
 
-async function teste() {
-  let moneyLauderingTerrosim = await getMoneyLaundering();
-
-  moneyLauderingTerrosim.forEach((item) => {
-    console.log(item);
-  });
-}
-
-teste();

@@ -4,7 +4,7 @@ import Terrorist from '../../entities/terrorist.js';
 const fbiScraper = new FbiScraper();
 const terroristModel = new Terrorist();
 
-async function getFbiTerrorists() {
+export default async function getFbiTerrorists() {
   try {
     const terrorists = await fbiScraper.getFbiTerrorists();
 
@@ -14,10 +14,3 @@ async function getFbiTerrorists() {
   }
 }
 
-async function teste() {
-  let fbiTerrorist = await getFbiTerrorists();
-
-  fbiTerrorist.forEach((x) => console.log(x));
-}
-
-teste();
