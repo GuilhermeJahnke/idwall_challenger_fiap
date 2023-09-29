@@ -6,6 +6,9 @@ class Terrorist {
     entityId,
     gender,
     arrestWarrants,
+    photoUrl,
+    crimes,
+    collectedFrom,
   ) {
     this.fullName = fullName;
     this.dateOfBirth = dateOfBirth;
@@ -13,15 +16,21 @@ class Terrorist {
     this.entityId = entityId;
     this.gender = gender;
     this.arrestWarrants = arrestWarrants;
+    this.photoUrl = photoUrl;
+    this.crimes = crimes;
+    this.collectedFrom = collectedFrom;
   }
 
   fromFbiDetailJson(terroristDetail) {
     let fullName = terroristDetail.title;
-    let dateOfBirth = terroristDetail.dates_of_birth_used;
-    let nationalities = terroristDetail.nationality;
-    let entityId = null; // TODO: Dar um jeito nisso.
+    let dateOfBirth = terroristDetail.dates_of_birth_used?.toString();
+    let nationalities = terroristDetail.nationality?.toString();
+    let entityId = terroristDetail.uid;
     let gender = terroristDetail.sex;
-    let charge = terroristDetail.caution;
+    let arrestWarrants = terroristDetail.caution;
+    let photoUrl = terroristDetail.images[0]?.thumb;
+    let crimes = [];
+    let collectedFrom = "FBI";
 
     let terroristModel = new Terrorist(
       fullName,
@@ -29,7 +38,10 @@ class Terrorist {
       nationalities,
       entityId,
       gender,
-      charge,
+      arrestWarrants,
+      photoUrl,
+      crimes,
+      collectedFrom,
     );
 
     return terroristModel;
@@ -37,11 +49,12 @@ class Terrorist {
 
   fromInterpolDetailJson(terroristDetail) {
     let fullName = terroristDetail.name + ' ' + terroristDetail.forename;
-    let dateOfBirth = terroristDetail.date_of_birth;
-    let nationalities = terroristDetail.nationalities;
+    let dateOfBirth = terroristDetail.date_of_birth?.toString();
+    let nationalities = terroristDetail.nationalities?.toString();
     let entityId = terroristDetail.entity_id;
     let gender = terroristDetail.sex_id;
-    let charge = terroristDetail.arrest_warrants[0].charge;
+    let arrestWarrants = terroristDetail.arrest_warrants[0].charge;
+    let collectedFrom = "Interpol";
 
     let terroristModel = new Terrorist(
       fullName,
@@ -49,7 +62,8 @@ class Terrorist {
       nationalities,
       entityId,
       gender,
-      charge,
+      arrestWarrants,
+      collectedFrom,
     );
 
     return terroristModel;

@@ -1,7 +1,7 @@
 import InterpolScrap from '../../entities/interpol_scraper.js';
 import getTerroristDetail from '../../utils/get_interpol_terrorist_detail.js';
 
-async function getFinanceTerrorism() {
+export default async function getFinanceTerrorism() {
   const interpolScrapper = new InterpolScrap();
 
   try {
@@ -16,12 +16,3 @@ async function getFinanceTerrorism() {
     console.error('Erro ao buscar terroristas:', error);
   }
 }
-
-async function teste() {
-  let financeTerrorism = await getFinanceTerrorism();
-  financeTerrorism.forEach((item) => {
-    console.log(item);
-  });
-}
-
-teste();

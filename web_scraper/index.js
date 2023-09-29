@@ -1,24 +1,14 @@
-class WebScrapper {
-  constructor(criminalsFBI, criminalsInterpol) {
-    this.criminalsFBI = criminalsFBI;
-    this.criminalsInterpol = criminalsInterpol;
-    this.fbiScraper = new FbiScraper();
-    this.interpolScraper = new InterpolScrap();
-  }
+import WebScraper from "./entities/web_scraper.js";
 
-  execute() {
-    // RODAR FBI
-    this.getData();
-    this.filter();
+async function get(){
+  // this is a mock data, substitute it with the data from the database
+  let webScrapper = new WebScraper();
 
-    // RODAR Interpol
-    this.getData();
-    this.filter();
-  }
+  // This function is used to retrieve a list of all terrorists from the FBI and Interpol
+  // It already filters the IDs of terrorists that exist in the database and updates if there is a repeat
+  let terrorists = await webScrapper.execute();
 
-  getData() {}
-
-  filter(criminals) {
-    // reomve duplicates
-  }
+  terrorists.forEach((x)=> console.log(x));
 }
+
+get();
