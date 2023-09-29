@@ -13,13 +13,13 @@ datasource db {
 
 model Criminal {
   id            String          @id @default(uuid())
-  name          String
-  forename      String
+  name          String // TODO: full name
+  forename      String // TODO: remover
   nationality   String
   dateOfBirth   DateTime
   photoUrl      String
   sex           String
-  reward        Int
+  reward        Int // TODO: remover
   collectedFrom String
   crimes        Crime[]
   createdAt     DateTime        @default(now())

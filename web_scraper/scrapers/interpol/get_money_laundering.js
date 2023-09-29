@@ -1,14 +1,13 @@
 // import InterpolScrap from "../../entities/interpol_scraper";
-import InterpolScrap from "../../entities/interpol_scraper.js";
-import getTerroristDetail from "../../utils/get_interpol_terrorist_detail.js";
+import InterpolScrap from '../../entities/interpol_scraper.js';
+import getTerroristDetail from '../../utils/get_interpol_terrorist_detail.js';
 
-
-async function getMoneyLaundering(){
+async function getMoneyLaundering() {
   const interpolScrapper = new InterpolScrap();
 
   try {
     const moneyLauderingList = await interpolScrapper.searchTerrorist(
-      "Money Laundering"
+      'Money Laundering',
     );
 
     const terroristDetail = await getTerroristDetail(moneyLauderingList);
@@ -19,13 +18,12 @@ async function getMoneyLaundering(){
   }
 }
 
+async function teste() {
+  let moneyLauderingTerrosim = await getMoneyLaundering();
 
-async function teste () {
- let moneyLauderingTerrosim = await getMoneyLaundering();
- 
- moneyLauderingTerrosim.forEach((item) => {
-  console.log(item);
-});
-} 
+  moneyLauderingTerrosim.forEach((item) => {
+    console.log(item);
+  });
+}
 
-teste()
+teste();

@@ -1,6 +1,6 @@
 class InterpolScrap {
   constructor() {
-    this.baseUrl = "https://ws-public.interpol.int/notices/v1/red?";
+    this.baseUrl = 'https://ws-public.interpol.int/notices/v1/red?';
     this.resultPerPage = 160;
   }
 
@@ -10,7 +10,7 @@ class InterpolScrap {
         new URLSearchParams({
           freeText: filter,
           resultPerPage: this.resultPerPage,
-        })
+        }),
     );
 
     const responseData = await response.json();

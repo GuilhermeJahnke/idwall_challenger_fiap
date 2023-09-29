@@ -5,7 +5,7 @@ class Terrorist {
     nationalities,
     entityId,
     gender,
-    arrestWarrants
+    arrestWarrants,
   ) {
     this.fullName = fullName;
     this.dateOfBirth = dateOfBirth;
@@ -19,7 +19,7 @@ class Terrorist {
     let fullName = terroristDetail.title;
     let dateOfBirth = terroristDetail.dates_of_birth_used;
     let nationalities = terroristDetail.nationality;
-    let entityId = null;
+    let entityId = null; // TODO: Dar um jeito nisso.
     let gender = terroristDetail.sex;
     let charge = terroristDetail.caution;
 
@@ -29,14 +29,14 @@ class Terrorist {
       nationalities,
       entityId,
       gender,
-      charge
+      charge,
     );
 
     return terroristModel;
   }
 
   fromInterpolDetailJson(terroristDetail) {
-    let fullName = terroristDetail.name + " " + terroristDetail.forename;
+    let fullName = terroristDetail.name + ' ' + terroristDetail.forename;
     let dateOfBirth = terroristDetail.date_of_birth;
     let nationalities = terroristDetail.nationalities;
     let entityId = terroristDetail.entity_id;
@@ -49,7 +49,7 @@ class Terrorist {
       nationalities,
       entityId,
       gender,
-      charge
+      charge,
     );
 
     return terroristModel;

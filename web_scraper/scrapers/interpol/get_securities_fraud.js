@@ -1,19 +1,19 @@
-import InterpolScrap from "../../entities/interpol_scraper.js";
-import getTerroristDetail from "../../utils/get_interpol_terrorist_detail.js";
+import InterpolScrap from '../../entities/interpol_scraper.js';
+import getTerroristDetail from '../../utils/get_interpol_terrorist_detail.js';
 
 async function getSecuritiesFraud() {
   const interpolScrapper = new InterpolScrap();
 
   try {
     const securitiesFraudList = await interpolScrapper.searchTerrorist(
-      "Securities Fraud"
+      'Securities Fraud',
     );
 
     const terroristDetail = await getTerroristDetail(securitiesFraudList);
 
     return terroristDetail;
   } catch (error) {
-    console.error("Erro ao buscar terroristas:", error);
+    console.error('Erro ao buscar terroristas:', error);
   }
 }
 
