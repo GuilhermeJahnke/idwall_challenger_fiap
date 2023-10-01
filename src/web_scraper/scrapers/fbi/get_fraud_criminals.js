@@ -1,9 +1,9 @@
 import FbiScraper from '../../entities/fbi_scraper.js';
 import Terrorist from '../../entities/terrorist.js';
 
-export default async function getFraudCriminals() {
+export default async function getFraudCriminals(pageSize) {
   try {
-    const fbiScraper = new FbiScraper({ pageSize: 160 });
+    const fbiScraper = new FbiScraper({ pageSize });
     const terroristModel = new Terrorist();
     const fraudCriminals = await fbiScraper.getFraudCriminals();
 

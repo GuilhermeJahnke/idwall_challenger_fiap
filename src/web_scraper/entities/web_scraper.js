@@ -6,6 +6,7 @@ import getFraudCriminals from '../scrapers/fbi/get_fraud_criminals.js';
 
 class WebScraper {
   constructor() {
+    this.pageSize = 10;
     this.criminalsList = [];
   }
 
@@ -20,27 +21,43 @@ class WebScraper {
   }
 
   async getInterpolData() {
-    let financeTerrorism = await getFinanceTerrorism();
-    let moneyLaundering = await getMoneyLaundering();
-    let securitiesFraud = await getSecuritiesFraud();
+    console.log('Collecting Interpol Data...');
+    let financeTerrorism = await getFinanceTerrorism(this.pageSize);
+    console.log(
+      'Data sucessfully collected from Finance Terrorism, number of registers: ' +
+        financeTerrorism.length,
+    );
+    let moneyLaundering = await getMoneyLaundering(this.pageSize);
+    console.log(
+      'Data sucessfully collected from Money Laundering, number of registers: ' +
+        moneyLaundering.length,
+    );
+    let securitiesFraud = await getSecuritiesFraud(this.pageSize);
+    console.log(
+      'Data sucessfully collected from Securities Fraud, number of registers: ' +
+        securitiesFraud.length,
+    );
 
-    return [...financeTerrorism, ...moneyLaundering, ...securitiesFraud];
+    return this.removeDuplicates([
+      ...financeTerrorism,
+      ...moneyLaundering,
+      ...securitiesFraud,
+    ]);
   }
 
   async getFBIdata() {
-    let fbiTerrorist = await getFbiTerrorists();
-    let fraudCriminal = await getFraudCriminals();
-
-    return [...fbiTerrorist, ...fraudCriminal].reduce((acc, cur) => {
-      let indexFound = acc.findIndex((item) => cur.entityId === item.entityId);
-
-      if (indexFound !== -1) {
-        acc[indexFound].crimes.push(cur.crimes[0]);
-        return acc;
-      }
-      acc.push(cur);
-      return acc;
-    }, []);
+    console.log('Collecting FBI Data...');
+    let fbiTerrorist = await getFbiTerrorists(this.pageSize);
+    console.log(
+      'Data sucessfully collected from terroris, number of registers: ' +
+        fbiTerrorist.length,
+    );
+    let fraudCriminal = await getFraudCriminals(this.pageSize);
+    console.log(
+      'Data sucessfully collected from fraud criminals, number of registers: ' +
+        fraudCriminal.length,
+    );
+    return this.removeDuplicates([...fbiTerrorist, ...fraudCriminal]);
   }
 
   filter(terroristList) {
@@ -56,6 +73,19 @@ class WebScraper {
 
       this.criminalsList[index] = newTerrorist;
     });
+  }
+
+  removeDuplicates(list) {
+    return list.reduce((acc, cur) => {
+      let indexFound = acc.findIndex((item) => cur.entityId === item.entityId);
+
+      if (indexFound !== -1) {
+        acc[indexFound].crimes.push(cur.crimes[0]);
+        return acc;
+      }
+      acc.push(cur);
+      return acc;
+    }, []);
   }
 }
 

@@ -2,8 +2,8 @@
 import InterpolScrap from '../../entities/interpol_scraper.js';
 import getTerroristDetail from '../../utils/get_interpol_terrorist_detail.js';
 
-export default async function getMoneyLaundering() {
-  const interpolScrapper = new InterpolScrap({ pageSize: 160 });
+export default async function getMoneyLaundering(pageSize) {
+  const interpolScrapper = new InterpolScrap({ pageSize });
 
   try {
     const moneyLauderingList = await interpolScrapper.searchTerrorist(
