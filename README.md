@@ -47,7 +47,7 @@ Esse projeto tem como objetivo fazer consulta na API do Interpol e da Fbi para r
   }
   ```
 
----
+  ---
 - **GET** `/criminals`
 - **Description:** Retorna os dados dos criminosos de acordo com o filtro, caso não possua, retorna todos.
 - **Query Parameters:**
@@ -78,7 +78,7 @@ Esse projeto tem como objetivo fazer consulta na API do Interpol e da Fbi para r
   ]
   ```
 
----
+  ---
 - **POST** `/criminals`
 - **Description:** Cria um criminoso no banco de dados.
 - **Body:**
@@ -108,7 +108,7 @@ Esse projeto tem como objetivo fazer consulta na API do Interpol e da Fbi para r
   "crimes": "Crime[]",
   }
   ```
----
+  ---
 - **PATCH** `/criminals/:id`
 - **Description:** Atualiza um criminoso no banco de dados.
 - **Body:**
@@ -141,7 +141,7 @@ Esse projeto tem como objetivo fazer consulta na API do Interpol e da Fbi para r
   }
   ```
 
----
+  ---
 - **DELETE** `/criminals/:id`
 - **Description:** Deleta e retorna o criminoso deletado do banco de dados.
 - **Response:**
@@ -170,7 +170,7 @@ Esse projeto tem como objetivo fazer consulta na API do Interpol e da Fbi para r
     }
   ]
   ```
----
+  ---
 
 - **POST** `/crimes`
 - **Description:** Cria um crime no banco de dados.
@@ -188,7 +188,7 @@ Esse projeto tem como objetivo fazer consulta na API do Interpol e da Fbi para r
     "name":"String",
   }
   ```
----
+  ---
 
 - **PATCH** `/crimes/:id`
 - **Description:** Atualiza um crime no banco de dados.
@@ -206,7 +206,7 @@ Esse projeto tem como objetivo fazer consulta na API do Interpol e da Fbi para r
     "name":"String",
   }
   ```
----
+  ---
 
 - **DELETE** `/crimes/:id`
 - **Description:** Deleta e retorna um crime no banco de dados.
