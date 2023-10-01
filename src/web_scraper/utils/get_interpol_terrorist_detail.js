@@ -4,7 +4,7 @@ import Terrorist from '../entities/terrorist.js';
 const interpolDetailScrap = new InterpolDetailScrap();
 const terroristModel = new Terrorist();
 
-export default async function getTerroristDetail(financeTerrorism) {
+export default async function getTerroristDetail(financeTerrorism, sentence) {
   let terrorists = [];
 
   for (const terrorist of financeTerrorism) {
@@ -14,6 +14,8 @@ export default async function getTerroristDetail(financeTerrorism) {
       const terroristDetail = await interpolDetailScrap.getDetail(
         entityIdFormatted,
       );
+
+      terroristDetail.sentence = [sentence];
 
       const terroristModelImpl =
         terroristModel.fromInterpolDetailJson(terroristDetail);

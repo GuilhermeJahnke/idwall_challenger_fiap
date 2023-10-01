@@ -1,7 +1,10 @@
 class FbiScraper {
-  constructor() {
+  constructor({ pageSize }) {
+    if (isNaN(pageSize) || !pageSize || pageSize > 160) {
+      pageSize = 160;
+    }
     this.baseUrl = 'https://api.fbi.gov/wanted/list?';
-    this.pageSize = 160;
+    this.pageSize = pageSize;
     this.person_classification = 'main';
   }
 
