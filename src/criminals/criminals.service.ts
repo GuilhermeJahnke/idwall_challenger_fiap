@@ -265,6 +265,12 @@ export class CriminalsService {
         };
       });
 
+      // ---------- This is another approach to insert the data
+      // We decided to not use this approach because it will be hard to debug if something goes wrong
+      // and it will be hard to know which criminal was created and which one was not
+      // but it is a good approach if you want to create a lot of data in a short time. (It is faster than the other approach)
+      // Probably we will use this approach when the data collected is too big in the future
+      //
       // let insertPromises = allCrimesWithCrimesId.map((criminal) => {
       //   const crimes = criminal.crimes;
       //   return this.prisma.criminal.create({
@@ -277,10 +283,7 @@ export class CriminalsService {
       //   });
       // });
       // let promises = await Promise.all(insertPromises);
-
-      // promises.map((response) => {
-      //   console.log(response?.fullName + ' created');
-      // });
+      // ----------
 
       for await (const criminal of allCrimesWithCrimesId) {
         const crimes = criminal.crimes;
