@@ -17,45 +17,48 @@ export class CrimesController {
   constructor(private readonly crimesService: CrimesService) {}
 
   @Post()
-  create(@Body() createCrimeDto: CreateCrimeDto) {
+  async create(@Body() createCrimeDto: CreateCrimeDto) {
     try {
-      return this.crimesService.create(createCrimeDto);
+      return await this.crimesService.create(createCrimeDto);
     } catch (error) {
       throw new HttpException(error.message, error.status || 400);
     }
   }
 
   @Get()
-  findAll() {
+  async findAll() {
     try {
-      return this.crimesService.findAll();
+      return await this.crimesService.findAll();
     } catch (error) {
       throw new HttpException(error.message, error.status || 400);
     }
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     try {
-      return this.crimesService.findOne(+id);
+      return await this.crimesService.findOne(+id);
     } catch (error) {
       throw new HttpException(error.message, error.status || 400);
     }
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCrimeDto: UpdateCrimeDto) {
+  async update(
+    @Param('id') id: string,
+    @Body() updateCrimeDto: UpdateCrimeDto,
+  ) {
     try {
-      return this.crimesService.update(+id, updateCrimeDto);
+      return await this.crimesService.update(+id, updateCrimeDto);
     } catch (error) {
       throw new HttpException(error.message, error.status || 400);
     }
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
     try {
-      return this.crimesService.remove(+id);
+      return await this.crimesService.remove(+id);
     } catch (error) {
       throw new HttpException(error.message, error.status || 400);
     }

@@ -13,16 +13,15 @@ datasource db {
 
 model Criminal {
   id            String          @id @default(uuid())
-  name          String // TODO: full name
-  forename      String // TODO: remover
-  nationality   String
-  dateOfBirth   DateTime
-  photoUrl      String
-  sex           String
-  reward        Int // TODO: remover
-  collectedFrom String
+  fullName          String
+  nationalities  String?
+  dateOfBirth   String?
+  photoUrl      String?
+  sex           String?
+  arrestWarrants String?
+  collectedFrom String?
   crimes        Crime[]
-  // entityId      String //TODO: Criar
+  entityId      String?
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
 }
@@ -30,6 +29,5 @@ model Criminal {
 model Crime {
   id          Int             @id @default(autoincrement())
   name        String
-  description String
   criminals   Criminal[]
 }

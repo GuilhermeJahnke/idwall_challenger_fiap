@@ -1,23 +1,13 @@
-import {
-  IsArray,
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
-  IsString,
-} from 'class-validator';
+import { IsArray, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CreateCriminalDto {
   @IsNotEmpty()
   @IsString()
-  name: string;
+  fullName: string;
 
   @IsNotEmpty()
   @IsString()
-  forename: string;
-
-  @IsNotEmpty()
-  @IsString()
-  nationality: string;
+  nationalities: string;
 
   @IsNotEmpty()
   dateOfBirth: string;
@@ -31,14 +21,17 @@ export class CreateCriminalDto {
   sex: string;
 
   @IsNotEmpty()
-  @IsNumber()
-  reward: number;
-
-  @IsNotEmpty()
   @IsString()
   collectedFrom: string;
 
   @IsOptional()
   @IsArray()
-  crimes: number[];
+  crimes: string[];
+
+  @IsString()
+  arrestWarrants: string;
+
+  @IsString()
+  @IsNotEmpty()
+  entityId: string;
 }

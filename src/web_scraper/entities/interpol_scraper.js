@@ -1,7 +1,10 @@
 class InterpolScrap {
-  constructor() {
+  constructor({ pageSize }) {
+    if (isNaN(pageSize) || !pageSize || pageSize > 160) {
+      pageSize = 160;
+    }
     this.baseUrl = 'https://ws-public.interpol.int/notices/v1/red?';
-    this.resultPerPage = 160;
+    this.resultPerPage = pageSize;
   }
 
   async searchTerrorist(filter) {
