@@ -14,7 +14,6 @@ export class CrimesService {
     try {
       return this.prisma.crime.create({
         data: {
-          description: createCrimeDto.description,
           name: createCrimeDto.name,
         },
       });
@@ -128,7 +127,14 @@ export class CrimesService {
         },
       });
     } catch (error) {
+      console.log(error.code);
       if (error.code === 'P2025') {
+        throw new CustomError({
+          message: error.meta.cause as string,
+          status: 404,
+        });
+      }
+      if (error.code === 'P2016') {
         throw new CustomError({
           message: error.meta.cause as string,
           status: 404,
