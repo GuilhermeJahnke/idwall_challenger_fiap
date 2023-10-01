@@ -8,17 +8,18 @@ Esse projeto tem como objetivo fazer consulta na API do Interpol e da Fbi para r
 - [X] É método fromInterpolDetailJson para criar uma instância da classe a partir dos detalhes fornecidos pela Interpol e Fbi.
 - [X] GetFinanceTerrorism buscar detalhes de cada criminoso e retornar uma lista de objetos Terrorist.​
 
-## **Tecnologias**
-- [x] [NodeJs](https://nodejs.org/en)
-- [x] [TypeScript](https://www.typescriptlang.org/)
-- [x] [Docker](https://docker.com/)
 
-## **Entregaveis**
+## **Decisões Técnicas:**
+- **[NodeJs](https://nodejs.org/en)** Decedimos usar NodeJs pelo Desenvolvimento rápido
+- **[TypeScript](https://www.typescriptlang.org/)** Como Linguagem de programação
+- **[Docker](https://docker.com/)** Como gerenciamento de Versões:
+- **[Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)** Como o padrão arquitetônico.
+
+## **Entregáveis**
 
 - [X] Repositório público GitHub com os principais requisitos implementados.
 - [X] Arquivo de documentação que explica como usar a API.
-- [x] [Documentação tecnica]:
-- [x] [Documentação detalhada]:
+- [x] Documentação detalhada *(Readme e ppt)*
 
 ## **Como executar e usar**
 - Clona o repositorio:  `git clone https://github.com/GuilhermeJahnke/idwall_challenger_fiap`
@@ -217,13 +218,6 @@ Esse projeto tem como objetivo fazer consulta na API do Interpol e da Fbi para r
     "name":"String",
   }
   ```
-
-
-## **Decisões Técnicas:**
-- **[NodeJs](https://nodejs.org/en)** Decedimos usar NodeJs pelo Desenvolvimento rápido
-- **[TypeScript](https://www.typescriptlang.org/)** Como Linguagem de programação
-- **[Docker](https://docker.com/)** Como gerenciamento de Versões:
-- **[Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)** Como o padrão arquitetônico.
 
 ## **Pessoas Autoras:**
 
