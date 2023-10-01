@@ -24,44 +24,208 @@ Esse projeto tem como objetivo fazer consulta na API do Interpol e da Fbi para r
 - Clona o repositorio:  `git clone https://github.com/GuilhermeJahnke/idwall_challenger_fiap`
 - Acessa a pasta do projeto no terminal: `cd idwall_challenger_fiap`
 - Instale as dependências: `npm install`
-- Execute a aplicação: `npm start`
+- Execute a aplicação em modo desenvolvimento: `npm run start:dev`
+- Agora é so executar os requests que deseja na URL Base: `http://localhost:3000`
 
-#### **Endpoints:**
+## **Endpoints:**
 
-- **GET** `/Criminal`
-- **Description:** Retorna os dados dos criminosos.
+### Criminals
+
+- **GET** `/criminals/:id`
+- **Description:** Retorna os do criminoso por ID.
 - **Response:**
   ```json
   {
   "id": "string",
   "full_name": "string",
   "nationality": "string",
-  "dateOfBirth": "DateTime",
-  "photoUrl": "String",
-  "sex": "String",
-  "collectedFrom": "String",
+  "dateOfBirth": "string",
+  "photoUrl": "string",
+  "sex": "string",
+  "collectedFrom": "string",
   "crimes": "Crime[]",
   }
+  ```
 
-- **GET** `/Crime`
-- **Description:** Retorna os crimes.
+---
+- **GET** `/criminals`
+- **Description:** Retorna os dados dos criminosos de acordo com o filtro, caso não possua, retorna todos.
+- **Query Parameters:**
+  ```ts
+  interface QueryParams {
+    fullName: string
+    sex: "F" | "M"
+    crime: string
+    sort: "asc" | "desc"
+    orderBy: "fullName" | "dateOfBirth"
+    skip: number
+    take: number
+  }
+  ```
+- **Response:**
+  ```json
+  [
+    {
+      "id": "string",
+      "full_name": "string",
+      "nationality": "string",
+      "dateOfBirth": "string",
+      "photoUrl": "string",
+      "sex": "string",
+      "collectedFrom": "string",
+      "crimes": "Crime[]",
+    }
+  ]
+  ```
+
+---
+- **POST** `/criminals`
+- **Description:** Cria um criminoso no banco de dados.
+- **Body:**
+  ```json
+  {
+   "fullName":"string",
+   "dateOfBirth":"string",
+   "nationalities":"string",
+   "entityId":"string",
+   "sex":"string",
+   "arrestWarrants":"string",
+   "photoUrl":"string",
+   "crimes":"string[]",
+   "collectedFrom":"string"
+  }
+  ```
 - **Response:**
   ```json
   {
-  "id":"Int"
-  "name":"String"
-  "description":"String"
-  "criminals":"Criminal[]"
-  } 
-   
+  "id": "string",
+  "full_name": "string",
+  "nationality": "string",
+  "dateOfBirth": "string",
+  "photoUrl": "string",
+  "sex": "string",
+  "collectedFrom": "string",
+  "crimes": "Crime[]",
+  }
+  ```
+---
+- **PATCH** `/criminals/:id`
+- **Description:** Atualiza um criminoso no banco de dados.
+- **Body:**
+  ```json
+  {
+   "fullName":"string",
+   "dateOfBirth":"string",
+   "nationalities":"string",
+   "entityId":"string",
+   "sex":"string",
+   "arrestWarrants":"string",
+   "photoUrl":"string",
+   "crimes":"string[]",
+   "collectedFrom":"string"
+  }
+  ```
+  PS: Não é necessário enviar todos os campos, apenas os que deseja atualizar.
 
-### **Decisões Técnicas:**
+- **Response:**
+  ```json
+  {
+  "id": "string",
+  "full_name": "string",
+  "nationality": "string",
+  "dateOfBirth": "string",
+  "photoUrl": "string",
+  "sex": "string",
+  "collectedFrom": "string",
+  "crimes": "Crime[]",
+  }
+  ```
+
+---
+- **DELETE** `/criminals/:id`
+- **Description:** Deleta e retorna o criminoso deletado do banco de dados.
+- **Response:**
+  ```json
+    {
+    "id": "string",
+    "full_name": "string",
+    "nationality": "string",
+    "dateOfBirth": "string",
+    "photoUrl": "string",
+    "sex": "string",
+    "collectedFrom": "string",
+    "crimes": "Crime[]",
+    }
+    ```
+
+### Crimes
+- **GET** `/crimes`
+- **Description:** Retorna uma lista com todos os crimes.
+- **Response:**
+  ```json
+  [
+    {
+      "id":"Int",
+      "name":"String",
+    }
+  ]
+  ```
+---
+
+- **POST** `/crimes`
+- **Description:** Cria um crime no banco de dados.
+- **Body:**
+  ```json
+  {
+    "name":"String",
+  }
+  ```
+
+- **Response:**
+  ```json
+  {
+    "id":"Int",
+    "name":"String",
+  }
+  ```
+---
+
+- **PATCH** `/crimes/:id`
+- **Description:** Atualiza um crime no banco de dados.
+- **Body:**
+  ```json
+  {
+    "name":"String",
+  }
+  ```
+
+- **Response:**
+  ```json
+  {
+    "id":"Int",
+    "name":"String",
+  }
+  ```
+---
+
+- **DELETE** `/crimes/:id`
+- **Description:** Deleta e retorna um crime no banco de dados.
+- **Response:**
+  ```json
+  {
+    "id":"Int",
+    "name":"String",
+  }
+  ```
+
+
+## **Decisões Técnicas:**
 - **[NodeJs](https://nodejs.org/en)** Decedimos usar NodeJs pelo Desenvolvimento rápido
 - **[TypeScript](https://www.typescriptlang.org/)** Como Linguagem de programação
 - **[Docker](https://docker.com/)** Como gerenciamento de Versões:
 - **[Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)** Como o padrão arquitetônico.
 
-### **Pessoas Autoras:**
+## **Pessoas Autoras:**
 
 - *[Felipe](https://github.com/GuilhermeJahnke)*
 - *[Bernardo](https://github.com/bernardomoraes)*
