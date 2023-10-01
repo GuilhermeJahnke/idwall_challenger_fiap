@@ -7,75 +7,120 @@ import {
   Param,
   Delete,
   HttpException,
+  Query,
 } from '@nestjs/common';
 import { CriminalsService } from './criminals.service';
 import { CreateCriminalDto } from './dto/create-criminal.dto';
 import { UpdateCriminalDto } from './dto/update-criminal.dto';
+import { FindAllQueryParamsDTO } from './dto/findAll-criminals.dto';
 
 @Controller('criminals')
 export class CriminalsController {
   constructor(private readonly criminalsService: CriminalsService) {}
 
+  @Get('/scrape')
+  async scrape() {
+    try {
+      return await this.criminalsService.scrape();
+    } catch (error) {
+      throw new HttpException(error.message, error.status || 400);
+    }
+  }
+
   @Post()
-  create(@Body() body: CreateCriminalDto) {
+  async create(@Body() body: CreateCriminalDto) {
     try {
       const { crimes, ...criminalInput } = body;
-      return this.criminalsService.create(criminalInput, crimes);
+      return await this.criminalsService.create(criminalInput, crimes);
     } catch (error) {
       throw new HttpException(error.message, error.status || 400);
     }
   }
 
   @Get()
-  findAll(
-    @Param('skip') skip: string,
-    @Param('take') take: string,
-    @Param('name') name: string,
-    @Param('cursor') cursor: string,
-    @Param('orderBy') orderBy: string,
-    @Param('sort') sort: string,
+  async findAll(
+    @Query()
+    query: FindAllQueryParamsDTO,
   ) {
+    if (query.sort !== ('asc' || 'desc') && query.sort) {
+      throw new HttpException('Invalid sort parameter', 400);
+    }
+    if (query.orderBy && query.orderBy === ('id' || 'fullName')) {
+      throw new HttpException(
+        'Invalid orderBy parameter, should be: "id" or "fullName"',
+        400,
+      );
+    }
     try {
-      return this.criminalsService.findAll({
+      const response = await this.criminalsService.findAll({
         where: {
-          name,
+          AND: [
+            {
+              fullName: {
+                contains: query.fullName,
+                mode: 'insensitive',
+              },
+            },
+            {
+              sex: {
+                contains: query.sex,
+                mode: 'insensitive',
+              },
+            },
+            {
+              crimes: {
+                some: {
+                  name: {
+                    contains: query.crime,
+                    mode: 'insensitive',
+                  },
+                },
+              },
+            },
+          ],
         },
-        skip: skip ? +skip : undefined,
-        take: take ? +take : undefined,
-        cursor: cursor ? { id: cursor } : undefined,
-        orderBy: {
-          [orderBy]: sort,
-        },
+        skip: query.skip,
+        take: query.take,
+        cursor: query.cursor ? { id: query.cursor } : undefined,
+        orderBy:
+          query.orderBy && query.sort
+            ? {
+                [query.orderBy]: query.sort,
+              }
+            : undefined,
       });
+
+      return response;
     } catch (error) {
       throw new HttpException(error.message, error.status || 400);
     }
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     try {
-      return this.criminalsService.findOne(id);
+      return await this.criminalsService.findOne(id);
     } catch (error) {
       throw new HttpException(error.message, error.status || 400);
     }
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() body: UpdateCriminalDto) {
+  async update(@Param('id') id: string, @Body() body: UpdateCriminalDto) {
     try {
       const { crimes, ...criminalInput } = body;
 
-      return this.criminalsService.update(id, criminalInput, crimes);
+      return await this.criminalsService.update(id, criminalInput, crimes);
     } catch (error) {
+      console.log('3.0', error);
       throw new HttpException(error.message, error.status || 400);
     }
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
     try {
-      return this.criminalsService.remove(id);
+      return await this.criminalsService.remove(id);
     } catch (error) {
       throw new HttpException(error.message, error.status || 400);
     }
