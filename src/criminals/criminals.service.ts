@@ -11,41 +11,42 @@ export class CriminalsService {
   constructor(private readonly prisma: PrismaService) {}
   async create(
     input: Prisma.CriminalCreateWithoutCrimesInput,
-    crimesIds?: number[],
+    crimesName?: string[],
   ): Promise<Criminal> {
     try {
-      let crimes = [];
-      console.log(crimesIds);
-      if (crimesIds.length !== 0) {
-        crimes = await this.crimesService.findAll({
+      let crimesToConnect: Prisma.CrimeWhereUniqueInput[] = [];
+      if (crimesName && crimesName.length !== 0) {
+        const crimesDb = await this.crimesService.findAll({
           where: {
-            id: {
-              in: crimesIds,
+            name: {
+              in: crimesName,
+              mode: 'insensitive',
             },
           },
         });
-        const crimesNotFound = crimesIds.reduce((acc, id) => {
-          if (!crimes.find((crime) => crime.id === id)) {
-            acc.push(id);
+        const crimesIds = crimesDb.map((crime) => crime.id);
+        const crimesNotFound = crimesName.reduce((acc, name) => {
+          if (!crimesDb.find((crime) => crime.name === name)) {
+            acc.push(name);
           }
           return acc;
         }, []);
         if (crimesNotFound.length !== 0) {
           throw new CustomError({
             message:
-              'Some of the crimes Id were not found: ' +
-              crimesNotFound.toString(),
+              'Some of the crimes were not found: ' + crimesNotFound.toString(),
             status: 404,
           });
         }
+
+        crimesToConnect = crimesIds.map((id) => ({ id }));
       }
-      console.log('parsed Data', new Date(input.dateOfBirth));
       const response = await this.prisma.criminal.create({
         data: {
           ...input,
 
           crimes: {
-            connect: crimes.map((crime) => ({ id: crime.id })),
+            connect: crimesToConnect,
           },
         },
       });
@@ -105,6 +106,9 @@ export class CriminalsService {
         where: {
           id,
         },
+        include: {
+          crimes: true,
+        },
       });
     } catch (error) {
       if (error.code === 'P2025') {
@@ -125,19 +129,56 @@ export class CriminalsService {
   async update(
     id: string,
     input: Prisma.CriminalUpdateWithoutCrimesInput,
-    crimesIds?: number[],
+    crimesName?: string[],
   ) {
     try {
-      if (!crimesIds?.length) {
-        await this.prisma.criminal.update({
+      if (!crimesName?.length) {
+        return await this.prisma.criminal.update({
           where: {
             id,
           },
           data: {
             ...input,
           },
+          include: {
+            crimes: true,
+          },
         });
       }
+
+      const crimesFound = await this.prisma.crime.findMany({
+        where: {
+          OR: crimesName.map((name) => ({
+            name: {
+              contains: name,
+              mode: 'insensitive',
+            },
+          })),
+        },
+      });
+      console.log(crimesFound);
+
+      const crimesNotFound = crimesName.reduce((acc, name) => {
+        if (
+          !crimesFound.find((crime) => {
+            const crimeNameParsed = crime.name.toLowerCase();
+            return crimeNameParsed.includes(name.toLowerCase());
+          })
+        ) {
+          acc.push(name);
+        }
+        return acc;
+      }, []);
+
+      if (crimesNotFound.length !== 0) {
+        throw new CustomError({
+          message:
+            'Some of the crimes were not found: ' + crimesNotFound.toString(),
+          status: 404,
+        });
+      }
+
+      const crimesIds = crimesFound.map((crime) => crime.id);
 
       return await this.prisma.criminal.update({
         where: {
@@ -149,9 +190,12 @@ export class CriminalsService {
             set: crimesIds?.map((id) => ({ id: id })),
           },
         },
+        include: {
+          crimes: true,
+        },
       });
     } catch (error) {
-      console.log('cheguei');
+      console.log(error);
       if (error.code === 'P2002') {
         throw new CustomError({
           message:
@@ -207,6 +251,7 @@ export class CriminalsService {
 
       await this.prisma.criminal.deleteMany({});
       const crimes = await this.crimesService.findAll();
+
       const allCrimesWithCrimesId = allCriminals.map((criminal) => {
         const crimesIds = criminal.crimes.map((crime) => {
           const crimeFound = crimes.find((c) => c.name === crime);
@@ -258,7 +303,8 @@ export class CriminalsService {
     } catch (error) {
       console.log(error);
       throw new CustomError({
-        message: 'Something went wrong during the database request',
+        message:
+          'Something when scraping the data. Please try again later. (Sometimes the website blocks the IP address)',
         status: 500,
         log: error.message,
       });

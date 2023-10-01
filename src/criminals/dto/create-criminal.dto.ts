@@ -26,7 +26,7 @@ export class CreateCriminalDto {
 
   @IsOptional()
   @IsArray()
-  crimes: number[];
+  crimes: string[];
 
   @IsString()
   arrestWarrants: string;
