@@ -17,8 +17,8 @@ Esse projeto tem como objetivo fazer consulta na API do Interpol e da Fbi para r
 
 - [X] Repositório público GitHub com os principais requisitos implementados.
 - [X] Arquivo de documentação que explica como usar a API.
-- [x] [Documentação tecnica](https://fiapcom-my.sharepoint.com/:p:/g/personal/rm94285_fiap_com_br/ESStAFvND41Okwp7DcO2GYYBez_bI9dnzGQAqFyj6bhiKw?e=MJDzQB)
-- [x] [Documentação detalhada](https://fiapcom-my.sharepoint.com/:p:/g/personal/rm92923_fiap_com_br/EaMHirWSFcJLkDGdJZMHadYBCMmJlRvrWyrAPm6dydnTFw?e=bfvMFf)
+- [x] [Documentação tecnica]:
+- [x] [Documentação detalhada]:
 
 ## **Como executar e usar**
 - Clona o repositorio:  `git clone https://github.com/GuilhermeJahnke/idwall_challenger_fiap`
