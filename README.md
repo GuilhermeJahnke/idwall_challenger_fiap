@@ -25,7 +25,7 @@ Esse projeto tem como objetivo fazer consulta na API do Interpol e da Fbi para r
 - Clona o repositorio:  `git clone https://github.com/GuilhermeJahnke/idwall_challenger_fiap`
 - Acessa a pasta do projeto no terminal: `cd idwall_challenger_fiap`
 - Instale as dependências: `npm install`
-- Execute a aplicação em modo desenvolvimento: `npm run start:dev`
+- Execute a aplicação em modo desenvolvimento: `npm run start`
 - Agora é so executar os requests que deseja na URL Base: `http://localhost:3000`
 
 ## **Endpoints:**
