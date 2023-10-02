@@ -16,21 +16,30 @@ export class CriminalsService {
     try {
       let crimesToConnect: Prisma.CrimeWhereUniqueInput[] = [];
       if (crimesName && crimesName.length !== 0) {
-        const crimesDb = await this.crimesService.findAll({
+        const crimesDb = await this.prisma.crime.findMany({
           where: {
-            name: {
-              in: crimesName,
-              mode: 'insensitive',
-            },
+            OR: crimesName.map((name) => ({
+              name: {
+                contains: name,
+                mode: 'insensitive',
+              },
+            })),
           },
         });
         const crimesIds = crimesDb.map((crime) => crime.id);
+        console.log(crimesIds);
         const crimesNotFound = crimesName.reduce((acc, name) => {
-          if (!crimesDb.find((crime) => crime.name === name)) {
+          if (
+            !crimesDb.find((crime) => {
+              const crimeNameParsed = crime.name.toLowerCase();
+              return crimeNameParsed.includes(name.toLowerCase());
+            })
+          ) {
             acc.push(name);
           }
           return acc;
         }, []);
+
         if (crimesNotFound.length !== 0) {
           throw new CustomError({
             message:
@@ -44,35 +53,39 @@ export class CriminalsService {
       const response = await this.prisma.criminal.create({
         data: {
           ...input,
-
           crimes: {
             connect: crimesToConnect,
           },
         },
+        include: {
+          crimes: true,
+        },
       });
       return response;
-    } catch (error) {
-      if (error.code === 'P2002') {
-        console.log(error);
+    } catch (err) {
+      if (err.code === 'P2002') {
+        console.log(err);
         throw new CustomError({
           message:
             'Something wrong with your input, please check the application logs for more details',
           status: 400,
-          log: error.message,
+          log: err.message,
         });
       }
-      if (error.code === 'P2025') {
-        console.log(error);
+      if (err.code === 'P2025') {
+        console.log(err);
         throw new CustomError({
-          message: error.meta.cause as string,
+          message: err.meta.cause as string,
           status: 404,
         });
       }
-      console.log(error);
+      if (err instanceof CustomError) {
+        throw err;
+      }
       throw new CustomError({
         message: 'Something went wrong during the database request',
         status: 500,
-        log: error.message,
+        log: err.message,
       });
     }
   }
