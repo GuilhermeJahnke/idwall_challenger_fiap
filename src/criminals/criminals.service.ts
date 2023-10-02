@@ -314,7 +314,6 @@ export class CriminalsService {
       //         ...criminal,
       //       },
       //     });
-      //     console.log(response?.fullName + ' created whithout crimes');
       //     continue;
       //   }
 
@@ -328,7 +327,6 @@ export class CriminalsService {
       //       },
       //     },
       //   });
-      //   console.log(response?.fullName + ' created');
       // }
       //----
       console.log('Scraping finished');

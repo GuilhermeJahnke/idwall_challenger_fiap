@@ -23,7 +23,6 @@ export class HttpExceptionFilter implements ExceptionFilter {
       });
       return;
     }
-    console.log('teste', exception.getResponse()?.['message']);
 
     response.status(status).json({
       message:

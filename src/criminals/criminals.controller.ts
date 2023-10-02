@@ -112,7 +112,6 @@ export class CriminalsController {
 
       return await this.criminalsService.update(id, criminalInput, crimes);
     } catch (error) {
-      console.log('3.0', error);
       throw new HttpException(error.message, error.status || 400);
     }
   }
