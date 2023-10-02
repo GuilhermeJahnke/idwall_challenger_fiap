@@ -278,29 +278,18 @@ export class CriminalsService {
         };
       });
 
-      // ---------- This is another approach to insert the data
-      // We decided to not use this approach because it will be hard to debug if something goes wrong
-      // and it will be hard to know which criminal was created and which one was not
-      // but it is a good approach if you want to create a lot of data in a short time. (It is faster than the other approach)
-      // Probably we will use this approach when the data collected is too big in the future
-      //
-      // let insertPromises = allCrimesWithCrimesId.map((criminal) => {
-      //   const crimes = criminal.crimes;
-      //   return this.prisma.criminal.create({
-      //     data: {
-      //       ...criminal,
-      //       crimes: {
-      //         connect: crimes.map((crime: number[]) => ({ id: crime })),
-      //       },
-      //     },
-      //   });
-      // });
-      // let promises = await Promise.all(insertPromises);
-      // ----------
-
-      for await (const criminal of allCrimesWithCrimesId) {
+      const insertPromises = allCrimesWithCrimesId.map((criminal) => {
         const crimes = criminal.crimes;
-        const response = await this.prisma.criminal.create({
+        if (!crimes) {
+          const response = this.prisma.criminal.create({
+            data: {
+              ...criminal,
+            },
+          });
+          return response;
+        }
+
+        const response = this.prisma.criminal.create({
           data: {
             ...criminal,
             crimes: {
@@ -310,9 +299,38 @@ export class CriminalsService {
             },
           },
         });
-        console.log(response?.fullName + ' created');
-      }
+        return response;
+      });
+      const promises = await Promise.all(insertPromises);
+      console.log(promises);
+      // ----------
+      // We decided to not use this approach because it was taking too long to insert the data (40 sec).
+      // We are using the approach above (using promises) and now it takes 2 sec to insert the data.
+      // for await (const criminal of allCrimesWithCrimesId) {
+      //   const crimes = criminal.crimes;
+      //   if (!crimes) {
+      //     const response = await this.prisma.criminal.create({
+      //       data: {
+      //         ...criminal,
+      //       },
+      //     });
+      //     console.log(response?.fullName + ' created whithout crimes');
+      //     continue;
+      //   }
 
+      //   const response = await this.prisma.criminal.create({
+      //     data: {
+      //       ...criminal,
+      //       crimes: {
+      //         connect: crimes.map((crime: number[]) => ({
+      //           id: crime,
+      //         })) as Prisma.CrimeWhereUniqueInput[],
+      //       },
+      //     },
+      //   });
+      //   console.log(response?.fullName + ' created');
+      // }
+      //----
       console.log('Scraping finished');
 
       return allCriminals;

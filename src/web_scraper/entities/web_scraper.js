@@ -6,7 +6,7 @@ import getFraudCriminals from '../scrapers/fbi/get_fraud_criminals.js';
 
 class WebScraper {
   constructor() {
-    this.pageSize = 10;
+    this.pageSize = 100;
     this.criminalsList = [];
   }
 
