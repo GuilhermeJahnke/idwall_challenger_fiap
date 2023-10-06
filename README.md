@@ -221,8 +221,8 @@ Esse projeto tem como objetivo fazer consulta na API do Interpol e da Fbi para r
 
 ## **Pessoas Autoras:**
 
-- *[Felipe](https://github.com/GuilhermeJahnke)*
+- *[Guilherme](https://github.com/GuilhermeJahnke)*
 - *[Bernardo](https://github.com/bernardomoraes)*
-- *[Guilherme](https://github.com/Zapotoczn)*
+- *[Felipe](https://github.com/Zapotoczn)*
 - *[Thamires](https://github.com/ThamiresAluiza)*
 - *[Gustavo](https://github.com/gustavoGui17)*
